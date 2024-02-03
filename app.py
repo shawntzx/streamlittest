@@ -8,12 +8,16 @@ def main():
     uploaded_file = st.file_uploader("Choose a PDF file", type="pdf")
 
     if uploaded_file is not None:
-        # To read file as bytes:
         bytes_data = uploaded_file.getvalue()
-        st.write("Uploaded PDF file is {} bytes.".format(len(bytes_data)))
-
-        # Add your code here to process the PDF file
-        # For example, read PDF contents, extract data, etc.
+        pdf_file = BytesIO(bytes_data)
+        pdf_reader = PyPDF2.PdfFileReader(pdf_file)
+        
+        st.write(f"Number of pages in the PDF: {pdf_reader.numPages}")
+        
+        # Display text of the first page as an example
+        page = pdf_reader.getPage(0)
+        page_text = page.extractText()
+        st.write(page_text)
 
 if __name__ == "__main__":
     main()
